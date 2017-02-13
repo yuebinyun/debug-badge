@@ -2,11 +2,11 @@
 // add dependency repository
 buildscript {
   repositories {
-    maven { url 'http://maven.airimos.com/nexus/content/repositories/airimos/' }
+    mavenLocal()
   }
 
   dependencies {
-    classpath 'com.demo.badge:badge:0.0.5'
+    classpath 'com.demo.badge:badge:0.0.7'
   }
 }
 

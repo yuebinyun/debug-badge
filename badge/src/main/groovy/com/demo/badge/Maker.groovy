@@ -36,6 +36,8 @@ class Maker implements Plugin<Project> {
       int width = image.getWidth();
       int height = image.getHeight();
 
+      println String.format(Locale.CHINA, "Img width : %d, Img height : %d", width, height)
+
       BufferedImage newImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
       Graphics2D g2d = newImg.createGraphics();
       g2d.drawImage(image, 0, 0, null);

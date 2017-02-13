@@ -6,38 +6,15 @@ dependencies {
   compile localGroovy()
 }
 
-repositories {
-  maven {
-    url "http://maven.airimos.com/nexus/content/repositories/airimos/"
-  }
-}
+// best way to set group ID
+group = groupId
 
-afterEvaluate { project ->
-  uploadArchives {
-    repositories {
-      mavenDeployer {
-
-        Properties properties = new Properties()
-        properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-        pom.groupId = properties.getProperty("groupId")
-        pom.artifactId = properties.getProperty("artifactId")
-        pom.version = properties.getProperty("version")
-
-        repository(url: properties.getProperty("rep_url")) {
-          authentication(userName: properties.getProperty("rep_username"),
-              password: properties.getProperty("rep_password"))
-        }
-
-        snapshotRepository(url: properties.getProperty("srep_url")) {
-          authentication(userName: properties.getProperty("rep_username"),
-              password: properties.getProperty("rep_password"))
-        }
-      }
-    }
-  }
-
-  task sourcesJar(type: Jar) {
-    from sourceSets.main.allJava
+install {
+  repositories.mavenInstaller {
+    // only necessary if artifact ID diverges from project name
+    // the latter defaults to project directory name and can be
+    // configured in settings.gradle
+    pom.artifactId = artifactId
+    pom.version = version
   }
 }
