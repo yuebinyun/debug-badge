@@ -21,3 +21,8 @@ allprojects {
 task clean(type: Delete) {
   delete rootProject.buildDir
 }
+
+
+task debug4Badeg(type:Exec){
+  commandLine 'cmd', '/c', 'gradlew :badge:install && gradlew :app:clean && gradlew :app:addDebugBadge'
+}

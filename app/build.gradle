@@ -27,6 +27,10 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
+    debug {
+      //applicationIdSuffix ".debug"
+      applicationIdSuffix ".dev"
+    }
     release {
       minifyEnabled false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -46,7 +50,9 @@ dependencies {
 
 addDebugBadge.group 'demo'
 badge {
-  label = "${project.android.defaultConfig.versionName}"
+  //  label = "${project.android.defaultConfig.versionName}"
+  // label = "Debug"
+  label = "Dev"
 }
 
 preBuild.dependsOn addDebugBadge
