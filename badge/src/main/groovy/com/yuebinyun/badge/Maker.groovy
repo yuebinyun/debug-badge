@@ -1,4 +1,4 @@
-package com.demo.badge
+package com.yuebinyun.badge
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
