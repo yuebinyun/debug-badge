@@ -1,6 +1,6 @@
 ## debug badge
 
-在 Debug app 的图标上显示版本信息。
+在 Debug app 的图标上显示版本信息或者其它文字。
 
 ![screenshot](attr/badge.png)
 
