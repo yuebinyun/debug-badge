@@ -1,9 +1,8 @@
 ## debug badge
 
-Add badge for app icon.
+Add badge(version code, version name, etc) for your **DEBUG APK**.
 
 ![screenshot](attr/badge.png)
-
 
 Add it to your project!
 
@@ -25,7 +24,9 @@ apply plugin: 'com.yuebinyun.badge'
 ......
 
 badge {
-  //  label = "${project.android.defaultConfig.versionName}"
+  /* The label you want to show*/
+  // label = "${project.android.defaultConfig.versionCode}"
+  // label = "${project.android.defaultConfig.versionName}"
   // label = "Debug"
   label = "Dev"
 }
