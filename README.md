@@ -32,14 +32,3 @@ badge {
 
 preBuild.dependsOn addDebugBadge
 ```
-
-
-### RUN
-
-```bash
-gradlew addDebugBadge
-```
-
-`or`
-
-![task](attr/task.png)
