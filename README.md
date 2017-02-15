@@ -20,14 +20,17 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.yuebinyun.badge'
-```
 
-```gradle
+......
+......
+
 badge {
   //  label = "${project.android.defaultConfig.versionName}"
   // label = "Debug"
   label = "Dev"
 }
+
+preBuild.dependsOn addDebugBadge
 ```
 
 
