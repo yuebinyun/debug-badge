@@ -8,14 +8,14 @@ dependencies {
 }
 
 // best way to set group ID
-group = groupId
+group = "com.github.yuebinyun.debug-badge"
 
 install {
   repositories.mavenInstaller {
     // only necessary if artifact ID diverges from project name
     // the latter defaults to project directory name and can be
     // configured in settings.gradle
-    pom.artifactId = artifactId
+    pom.artifactId = "debug-badge"
     pom.version = version
   }
 }

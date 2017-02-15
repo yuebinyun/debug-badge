@@ -6,7 +6,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.yuebinyun.badge:badge:0.0.7'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.0'
   }
 }
 
@@ -23,7 +23,7 @@ android {
     minSdkVersion 15
     targetSdkVersion 25
     versionCode 1
-    versionName "3.2.1"
+    versionName "1.0.1"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
@@ -50,9 +50,11 @@ dependencies {
 
 addDebugBadge.group 'demo'
 badge {
-  //  label = "${project.android.defaultConfig.versionName}"
   // label = "Debug"
-  label = "Dev"
+  // label = "Dev" // optional.  Defualt text is `Debug`
+  label = "${project.android.defaultConfig.versionName}"
+  // labelColor = 0x000000 // optional.  Default color is WHITE
+  labelBg = 0x0099FF // optional.  Defualt color is RED
 }
 
 preBuild.dependsOn addDebugBadge

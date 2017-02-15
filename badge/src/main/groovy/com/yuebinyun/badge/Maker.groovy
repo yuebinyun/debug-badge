@@ -22,6 +22,8 @@ class Maker implements Plugin<Project> {
     project.task(TASK_NAME) << {
 
       String label = "$project.badge.label"
+      Integer labelColor = "$project.badge.labelColor".toInteger()
+      Integer labelBg = "$project.badge.labelBg".toInteger()
 
       if (label == null || label.empty) {
         label = DEFAULT_LABEL
@@ -56,7 +58,7 @@ class Maker implements Plugin<Project> {
 
           File debugImg = new File(iconDir, iconFileName + ".png")
 
-          generateImg(releaseImg, debugImg, label)
+          generateImg(releaseImg, debugImg, label, labelColor, labelBg)
         }
       }
     }
@@ -67,8 +69,11 @@ class Maker implements Plugin<Project> {
    * @param srcImg ----  Release 版本的图标文件名
    * @param dstImg ----  Debug 版本的图标文件名
    * @param label -----  Debug 版本图标上要显示的文字信息
+   * @param labelColor - label 文字色
+   * @param labelBg ---  label 背景色
    */
-  public static void generateImg(File srcImg, File dstImg, String label) {
+  public static void generateImg(File srcImg, File dstImg, String label, Integer labelColor,
+      Integer labelBg) {
 
     BufferedImage image;
     image = ImageIO.read(srcImg);
@@ -95,11 +100,25 @@ class Maker implements Plugin<Project> {
     int x = newImg.getWidth() - fm.stringWidth(label) - 2;
     int y = newImg.getHeight() - fm.getAscent();
 
-    g2d.setPaint(Color.RED);
+    if (labelBg == null || labelBg < 0 || labelBg > 0xFFFFFF) {
+      g2d.setColor(Color.RED)
+      g2d.setPaint(Color.RED);
+    } else {
+      g2d.setPaint(new Color(labelBg))
+      g2d.setColor(new Color(labelBg))
+    }
+
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2d.fillRect(x - 4, y, newImg.getWidth() - x + 4, newImg.getHeight() - y);
-    g2d.setPaint(Color.WHITE);
-    g2d.setColor(Color.WHITE);
+
+    if (labelColor == null || labelColor < 0 || labelBg > 0xFFFFFF) {
+      g2d.setPaint(Color.WHITE);
+      g2d.setColor(Color.WHITE);
+    } else {
+      g2d.setPaint(new Color(labelColor));
+      g2d.setColor(new Color(labelColor));
+    }
+
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2d.drawString(label, x, newImg.getHeight() - fm.getDescent());
     g2d.dispose();

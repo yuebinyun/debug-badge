@@ -4,7 +4,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.0'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.1'
   }
 }
 apply plugin: 'com.android.application'
@@ -39,5 +39,15 @@ dependencies {
   compile 'com.android.support:appcompat-v7:25.1.1'
   testCompile 'junit:junit:4.12'
 }
+
+badge {
+  // label = "Debug"
+  // label = "Dev" // optional.  Defualt text is `Debug`
+  label = "${project.android.defaultConfig.versionName}"
+  labelColor = 0xFFFFFF // optional.  Default color is WHITE
+  labelBg = 0x0099FF // optional.  Defualt color is RED
+}
+
+preBuild.dependsOn addDebugBadge
 
 

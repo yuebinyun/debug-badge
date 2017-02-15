@@ -1,6 +1,4 @@
-## debug badge
-
-Add badge(version code, version name, etc) for your **DEBUG APK**.
+## Add badge(version code, version name, etc) for your **DEBUG APK**.
 
 ![screenshot](attr/badge.png)
 
@@ -13,7 +11,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.0'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.1'
   }
 }
 
@@ -29,6 +27,10 @@ badge {
   // label = "${project.android.defaultConfig.versionName}"
   // label = "Debug"
   label = "Dev"
+
+  // update 2017/02/15
+  labelColor = 0x000000 // optional.  Default color is WHITE
+  labelBg = 0x0099FF // optional.  Defualt color is RED
 }
 
 preBuild.dependsOn addDebugBadge
