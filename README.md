@@ -11,27 +11,58 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.1'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.2'
   }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.yuebinyun.badge'
 
-......
-......
-
-badge {
-  /* The label you want to show*/
-  // label = "${project.android.defaultConfig.versionCode}"
-  // label = "${project.android.defaultConfig.versionName}"
-  // label = "Debug"
-  label = "Dev"
-
-  // update 2017/02/15
-  labelColor = 0x000000 // optional.  Default color is WHITE
-  labelBg = 0x0099FF // optional.  Defualt color is RED
+android {
+  //...
 }
 
-preBuild.dependsOn addDebugBadge
+dependencies {
+  //...
+}
+
+// if you don't set flavor
+badge {
+  // label = "Debug"
+  // label = "Dev" // optional.  Defualt text is `Debug`
+  label = "${project.android.defaultConfig.versionName}"
+  labelColor = 0xFFFFFF // optional.  Default color is WHITE
+  labelBgColor = 0x0099FF // optional.  Defualt color is RED
+}
+
+// if you want to add badge for flavor-debug-version app
+badgeFlavor {
+
+  demo {
+    label = "demo"
+    // label = "Dev" // optional.  Defualt text is `Debug`
+    // label = "${project.android.defaultConfig.versionName}"
+    // labelColor = 0x000000 // optional.  Default color is WHITE
+    // labelBgColor = 0x0099FF // optional.  Defualt color is RED
+  }
+
+  full {
+    label = "full"
+    // label = "Dev" // optional.  Defualt text is `Debug`
+    // label = "${project.android.defaultConfig.versionName}"
+    // labelColor = 0x000000 // optional.  Default color is WHITE
+    // labelBgColor = 0x0099FF // optional.  Defualt color is RED
+  }
+
+  // NOT SET
+  //  flavor1 {
+  //    label = "flavor1"
+  //  }
+
+  flavor2 {
+    label = "flavor2"
+    labelColor = 0xFF00FF // optional.  Default color is WHITE
+    labelBgColor = 0x0099FF // optional.  Defualt color is RED
+  }
+}
 ```
