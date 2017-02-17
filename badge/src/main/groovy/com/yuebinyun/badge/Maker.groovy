@@ -9,74 +9,107 @@ import java.awt.image.BufferedImage;
 
 class Maker implements Plugin<Project> {
 
-  final static TASK_NAME = "addDebugBadge"
-  final static DEFAULT_LABEL = "Debug"
-  final static EXTENSIONS_PARM = "badge"
-  // 清单文件，文件路径
   final static FEST_PATH = "src/main/AndroidManifest.xml"
 
   @Override void apply(Project project) {
 
-    project.extensions.create(EXTENSIONS_PARM, BadgeExtension)
+    project.extensions.create("badge", BadgeExtension)
 
-    project.task(TASK_NAME) << {
+    def debugBadges = project.container(BadgeFlavor)
+    project.extensions.badgeFlavor = debugBadges
 
-      String label = "$project.badge.label"
-      Integer labelColor = "$project.badge.labelColor".toInteger()
-      Integer labelBg = "$project.badge.labelBg".toInteger()
+    project.tasks.all() { task ->
 
-      if (label == null || label.empty) {
-        label = DEFAULT_LABEL
-      }
+      task.doLast {
 
-      println project.projectDir.getAbsolutePath()
+        if (task.name.equals("mergeDebugResources")) {
 
-      String[] str = getAppIconInfo(new File(project.projectDir, FEST_PATH))
+          // no flavor in this module
 
-      if (str == null) {
-        return
-      }
+          // debug res dir
+          File debugDir = new File(project.buildDir, "intermediates/res/merged/debug")
 
-      String iconDirPrefix = str[0].replace("@", "")
-      String iconFileName = str[1]
+          def BadgeFlavor badge = new BadgeFlavor("debug")
+          badge.label = project.extensions.badge.label
+          badge.labelColor = project.extensions.badge.labelColor
+          badge.labelBgColor = project.extensions.badge.labelBgColor
 
-      File releaseResDir = new File(project.projectDir, "src/main/res")
+          changeAllIconsInMultiDirs(project, debugDir, badge)
+          // ---
+        } else if (task.name.startsWith("merge") && task.name.endsWith("DebugResources")) {
 
-      for (File releaseImgDir : releaseResDir.listFiles()) {
-        if (releaseImgDir.name.startsWith(iconDirPrefix)) {
-
-          // 创建 Debug Res 文件夹
-          File iconDir = new File(project.projectDir, "src/debug/res/" + releaseImgDir.name)
-          iconDir.mkdirs()
-
-          File releaseImg = new File(releaseImgDir, iconFileName + ".png")
-
-          if (!releaseImg.exists()) {
-            println "Error !!! NO SUCH FILE : " + releaseImg.absolutePath
-            continue
+          String curFlavorName = task.name.replace("merge", "").
+              replace("DebugResources", "").
+              toLowerCase();
+          BadgeFlavor badge = null;
+          for (BadgeFlavor temp : project.extensions.badgeFlavor) {
+            if (temp.label.toLowerCase().equals(curFlavorName)) {
+              badge = temp;
+              break
+            }
           }
 
-          File debugImg = new File(iconDir, iconFileName + ".png")
+          if (badge == null) {
+            // not set badge for current flavor
+            println "--> NOT SET BADGE FOR FLAVOR :" + curFlavorName
+            return
+          }
 
-          generateImg(releaseImg, debugImg, label, labelColor, labelBg)
+          // debug res dir
+          File debugResDir = new File(project.buildDir,
+              "intermediates/res/merged/" + badge.name + "/debug")
+
+          changeAllIconsInMultiDirs(project, debugResDir, badge)
         }
       }
     }
   }
 
   /**
+   *
+   * @param project
+   * @param releaseResDir
+   */
+  public static void changeAllIconsInMultiDirs(Project project, File debugDir,
+      BadgeFlavor badge) {
+    String[] str = getAppIconInfo(new File(project.projectDir, FEST_PATH))
+    if (str == null) {
+      return;
+    }
+
+    String iconDirPrefix = str[0].replace("@", "")
+    String iconFileName = str[1]
+
+    for (File releaseImgDir : debugDir.listFiles(new FileFilter() {
+      @Override
+      boolean accept(File file) {
+        return file.name.startsWith(iconDirPrefix)
+      }
+    })) {
+      File debugIcon = new File(debugDir,
+          releaseImgDir.name + "/" + iconFileName + ".png")
+      if (debugIcon.exists()) {
+        println "--> ADD BADGE ON " + debugIcon.absolutePath
+        addBadgeOnIcon(debugIcon, badge.label, badge.labelColor, badge.labelBgColor)
+      } else {
+        println "*** BADGE PLUGIN WARNING : NO SUCH FILE: " + debugIcon.absolutePath
+      }
+    }
+  }
+
+  /**
    * 新建 Debug 版本的 ICON 图标
-   * @param srcImg ----  Release 版本的图标文件名
+   * @param icon ----  Release 版本的图标文件名
    * @param dstImg ----  Debug 版本的图标文件名
    * @param label -----  Debug 版本图标上要显示的文字信息
    * @param labelColor - label 文字色
-   * @param labelBg ---  label 背景色
+   * @param labelBgColor ---  label 背景色
    */
-  public static void generateImg(File srcImg, File dstImg, String label, Integer labelColor,
-      Integer labelBg) {
+  public static void addBadgeOnIcon(File icon, String label, Integer labelColor,
+      Integer labelBgColor) {
 
     BufferedImage image;
-    image = ImageIO.read(srcImg);
+    image = ImageIO.read(icon);
 
     int width = image.getWidth();
     int height = image.getHeight();
@@ -100,18 +133,18 @@ class Maker implements Plugin<Project> {
     int x = newImg.getWidth() - fm.stringWidth(label) - 2;
     int y = newImg.getHeight() - fm.getAscent();
 
-    if (labelBg == null || labelBg < 0 || labelBg > 0xFFFFFF) {
+    if (labelBgColor == null || labelBgColor < 0 || labelBgColor > 0xFFFFFF) {
       g2d.setColor(Color.RED)
       g2d.setPaint(Color.RED);
     } else {
-      g2d.setPaint(new Color(labelBg))
-      g2d.setColor(new Color(labelBg))
+      g2d.setPaint(new Color(labelBgColor))
+      g2d.setColor(new Color(labelBgColor))
     }
 
     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     g2d.fillRect(x - 4, y, newImg.getWidth() - x + 4, newImg.getHeight() - y);
 
-    if (labelColor == null || labelColor < 0 || labelBg > 0xFFFFFF) {
+    if (labelColor == null || labelColor < 0 || labelBgColor > 0xFFFFFF) {
       g2d.setPaint(Color.WHITE);
       g2d.setColor(Color.WHITE);
     } else {
@@ -124,7 +157,10 @@ class Maker implements Plugin<Project> {
     g2d.dispose();
 
     // 保存生成的图片
-    ImageIO.write(newImg, "png", dstImg);
+    boolean ret = ImageIO.write(newImg, "png", icon);
+    if (!ret) {
+      println "*** Failed to add badge"
+    }
   }
 
   // get app icon info

@@ -6,11 +6,9 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.0'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.2'
   }
 }
-
-apply plugin: 'com.yuebinyun.badge'
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 apply plugin: 'com.android.application'
@@ -36,6 +34,29 @@ android {
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
     }
   }
+
+  //  productFlavors {
+  //
+  //    demo {
+  //      applicationIdSuffix ".demo"
+  //      versionNameSuffix "-demo"
+  //    }
+  //
+  //    full {
+  //      applicationIdSuffix ".full"
+  //      versionNameSuffix "-full"
+  //    }
+  //
+  //    flavor1 {
+  //      applicationIdSuffix ".fla1"
+  //      versionNameSuffix "-demo"
+  //    }
+  //
+  //    flavor2 {
+  //      applicationIdSuffix ".flav2"
+  //      versionNameSuffix "-full"
+  //    }
+  //  }
 }
 
 dependencies {
@@ -47,14 +68,45 @@ dependencies {
   testCompile 'junit:junit:4.12'
 }
 
+/*
+apply plugin: 'com.yuebinyun.badge'
 
-addDebugBadge.group 'demo'
 badge {
   // label = "Debug"
   // label = "Dev" // optional.  Defualt text is `Debug`
   label = "${project.android.defaultConfig.versionName}"
-  // labelColor = 0x000000 // optional.  Default color is WHITE
-  labelBg = 0x0099FF // optional.  Defualt color is RED
+  //    labelColor = 0x000000 // optional.  Default color is WHITE
+  //    labelBgColor = 0x0099FF // optional.  Defualt color is RED
 }
 
-preBuild.dependsOn addDebugBadge
+//addDebugBadge.group 'demo'
+badgeFlavor {
+
+  demo {
+    label = "demo"
+    // label = "Dev" // optional.  Defualt text is `Debug`
+    // label = "${project.android.defaultConfig.versionName}"
+    //    labelColor = 0x000000 // optional.  Default color is WHITE
+    //    labelBgColor = 0x0099FF // optional.  Defualt color is RED
+  }
+
+  full {
+    label = "full"
+    // label = "Dev" // optional.  Defualt text is `Debug`
+    // label = "${project.android.defaultConfig.versionName}"
+    // labelColor = 0x000000 // optional.  Default color is WHITE
+    // labelBgColor = 0x0099FF // optional.  Defualt color is RED
+  }
+
+  // NOT SET
+  //  flavor1 {
+  //    label = "flavor1"
+  //  }
+
+  flavor2 {
+    label = "flavor2"
+    labelColor = 0xFF00FF // optional.  Default color is WHITE
+    labelBgColor = 0x0099FF // optional.  Defualt color is RED
+  }
+}
+*/
