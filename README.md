@@ -11,7 +11,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.2'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.3'
   }
 }
 
@@ -34,7 +34,9 @@ badge {
   labelColor = 0xFFFFFF // optional.  Default color is WHITE
   labelBgColor = 0x0099FF // optional.  Defualt color is RED
 }
+```
 
+```
 // if you want to add badge for flavor-debug-version app
 badgeFlavor {
 

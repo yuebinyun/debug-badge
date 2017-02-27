@@ -10,8 +10,6 @@ android {
     targetSdkVersion 25
     versionCode 1
     versionName "0.1.2"
-
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
     release {
@@ -20,37 +18,33 @@ android {
     }
   }
 
-    productFlavors {
+  productFlavors {
 
-      demo {
-        applicationIdSuffix ".demo"
-        versionNameSuffix "-demo"
-      }
-
-      full {
-        applicationIdSuffix ".full"
-        versionNameSuffix "-full"
-      }
-
-      flavor1 {
-        applicationIdSuffix ".fla1"
-        versionNameSuffix "-fla1"
-      }
-
-      flavor2 {
-        applicationIdSuffix ".fla2"
-        versionNameSuffix "-fla2"
-      }
+    demoAbC {
+      applicationIdSuffix ".demo"
+      versionNameSuffix "-demo"
     }
+
+    full {
+      applicationIdSuffix ".full"
+      versionNameSuffix "-full"
+    }
+
+    flavor1 {
+      applicationIdSuffix ".fla1"
+      versionNameSuffix "-fla1"
+    }
+
+    flavor2 {
+      applicationIdSuffix ".fla2"
+      versionNameSuffix "-fla2"
+    }
+  }
 }
 
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
-  androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-    exclude group: 'com.android.support', module: 'support-annotations'
-  })
   compile 'com.android.support:appcompat-v7:25.1.1'
-  testCompile 'junit:junit:4.12'
 }
 
 
@@ -79,7 +73,7 @@ badge {
 // if you want to add badge for flavor-debug-version app
 badgeFlavor {
 
-  demo {
+  demoAbC {
     label = "demo"
     // label = "Dev" // optional.  Defualt text is `Debug`
     // label = "${project.android.defaultConfig.versionName}"

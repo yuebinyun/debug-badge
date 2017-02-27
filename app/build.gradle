@@ -1,16 +1,3 @@
-//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-// add dependency repository
-buildscript {
-  repositories {
-    mavenLocal()
-  }
-
-  dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.2'
-  }
-}
-//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 apply plugin: 'com.android.application'
 
 android {
@@ -35,28 +22,28 @@ android {
     }
   }
 
-  //  productFlavors {
-  //
-  //    demo {
-  //      applicationIdSuffix ".demo"
-  //      versionNameSuffix "-demo"
-  //    }
-  //
-  //    full {
-  //      applicationIdSuffix ".full"
-  //      versionNameSuffix "-full"
-  //    }
-  //
-  //    flavor1 {
-  //      applicationIdSuffix ".fla1"
-  //      versionNameSuffix "-demo"
-  //    }
-  //
-  //    flavor2 {
-  //      applicationIdSuffix ".flav2"
-  //      versionNameSuffix "-full"
-  //    }
-  //  }
+  productFlavors {
+
+    demoAbCdE {
+      applicationIdSuffix ".demo"
+      versionNameSuffix "-demo"
+    }
+
+    full {
+      applicationIdSuffix ".full"
+      versionNameSuffix "-full"
+    }
+
+    flavor1 {
+      applicationIdSuffix ".fla1"
+      versionNameSuffix "-demo"
+    }
+
+    flavor2 {
+      applicationIdSuffix ".flav2"
+      versionNameSuffix "-full"
+    }
+  }
 }
 
 dependencies {
@@ -68,7 +55,19 @@ dependencies {
   testCompile 'junit:junit:4.12'
 }
 
+
 /*
+
+buildscript {
+  repositories {
+    mavenLocal()
+  }
+
+  dependencies {
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.2'
+  }
+}
+
 apply plugin: 'com.yuebinyun.badge'
 
 badge {
@@ -82,7 +81,7 @@ badge {
 //addDebugBadge.group 'demo'
 badgeFlavor {
 
-  demo {
+  demoAbCdE {
     label = "demo"
     // label = "Dev" // optional.  Defualt text is `Debug`
     // label = "${project.android.defaultConfig.versionName}"

@@ -9,8 +9,6 @@ import java.awt.image.BufferedImage;
 
 class Maker implements Plugin<Project> {
 
-  final static FEST_PATH = "src/main/AndroidManifest.xml"
-
   @Override void apply(Project project) {
 
     project.extensions.create("badge", BadgeExtension)
@@ -22,7 +20,7 @@ class Maker implements Plugin<Project> {
 
       task.doLast {
 
-        if (task.name.equals("mergeDebugResources")) {
+        if (task.name.equals("processDebugManifest")) {
 
           // no flavor in this module
 
@@ -34,16 +32,20 @@ class Maker implements Plugin<Project> {
           badge.labelColor = project.extensions.badge.labelColor
           badge.labelBgColor = project.extensions.badge.labelBgColor
 
-          changeAllIconsInMultiDirs(project, debugDir, badge)
-          // ---
-        } else if (task.name.startsWith("merge") && task.name.endsWith("DebugResources")) {
+          // debug version AndroidManifest.xml
+          String manifestPath = project.buildDir.absolutePath +
+              "/intermediates/manifests/full/debug/AndroidManifest.xml";
 
-          String curFlavorName = task.name.replace("merge", "").
-              replace("DebugResources", "").
+          changeAllIconsInMultiDirs(project, debugDir, badge, manifestPath)
+          // ---
+        } else if (task.name.startsWith("process") && task.name.endsWith("DebugManifest")) {
+
+          String curFlavorName = task.name.replace("process", "").
+              replace("DebugManifest", "").
               toLowerCase();
           BadgeFlavor badge = null;
           for (BadgeFlavor temp : project.extensions.badgeFlavor) {
-            if (temp.label.toLowerCase().equals(curFlavorName)) {
+            if (temp.name.toLowerCase().equals(curFlavorName)) {
               badge = temp;
               break
             }
@@ -59,7 +61,12 @@ class Maker implements Plugin<Project> {
           File debugResDir = new File(project.buildDir,
               "intermediates/res/merged/" + badge.name + "/debug")
 
-          changeAllIconsInMultiDirs(project, debugResDir, badge)
+          // flavor debug manifest file
+          String manifestFile = project.buildDir.absolutePath + "/intermediates/manifests/full/" +
+              badge.name +
+              "/debug/AndroidManifest.xml"
+
+          changeAllIconsInMultiDirs(project, debugResDir, badge, manifestFile)
         }
       }
     }
@@ -71,8 +78,8 @@ class Maker implements Plugin<Project> {
    * @param releaseResDir
    */
   public static void changeAllIconsInMultiDirs(Project project, File debugDir,
-      BadgeFlavor badge) {
-    String[] str = getAppIconInfo(new File(project.projectDir, FEST_PATH))
+      BadgeFlavor badge, String manifestPath) {
+    String[] str = getAppIconInfo(new File(manifestPath))
     if (str == null) {
       return;
     }

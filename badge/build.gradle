@@ -16,7 +16,7 @@ install {
     // the latter defaults to project directory name and can be
     // configured in settings.gradle
     pom.artifactId = "debug-badge"
-    pom.version = version
+    pom.version = '0.1.3'
   }
 }
 
