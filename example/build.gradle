@@ -55,7 +55,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.2'
+    classpath 'com.github.yuebinyun.debug-badge:debug-badge:0.1.3'
   }
 }
 
