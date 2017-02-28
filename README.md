@@ -4,6 +4,18 @@
 
 Add it to your project!
 
+### Clean your project
+![clean](attr/clean.png)
+
+or
+```bash
+./gradlew clean
+## or
+## gradle clean
+```
+
+### Add gradle plugin
+
 ```gradle
 buildscript {
   repositories {
@@ -36,7 +48,7 @@ badge {
 }
 ```
 
-```
+```gradle
 // if you want to add badge for flavor-debug-version app
 badgeFlavor {
 
