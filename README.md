@@ -32,6 +32,7 @@ apply plugin: 'com.yuebinyun.badge'
 
 android {
   //...
+  //
 }
 
 dependencies {
